@@ -23,4 +23,12 @@ public enum Ink {
     public String bg(String str){
         return this.bg + str;
     }
+
+    public void println(Object o){
+        IO.println(this.fg(o.toString()));
+    }
+
+    public void printlnBg(Object o){
+        IO.println(this.bg(o.toString()));
+    }
 }
