@@ -1,4 +1,4 @@
-package com.github;
+package com.github.pateladitya;
 
 public enum Ink {
     BLACK("\033[30m", "\033[40m"),
@@ -11,11 +11,12 @@ public enum Ink {
     WHITE("\033[37m", "\033[47m"),
     GREY("\033[38;5;245m", "\033[48;5;245m");
 
-    private final String fg;
-    private final String bg;
-
     public static final String RESET_FG = "\033[39m";
     public static final String RESET_BG = "\033[49m";
+    public static final String RESET_INK = "\033[39;49m";
+
+    public final String fg;
+    public final String bg;
 
     Ink(String fg, String bg) {
         this.fg = fg;
@@ -31,18 +32,18 @@ public enum Ink {
     }
 
     public void print(Object o){
-        IO.print(this.fg(o.toString()));
+       System.out.print(this.fg(o.toString()));
     }
 
     public void printBg(Object o){
-        IO.print(this.bg(o.toString()));
+        System.out.print(this.bg(o.toString()));
     }
 
     public void println(Object o){
-        IO.println(this.fg(o.toString()));
+        System.out.println(this.fg(o.toString()));
     }
 
     public void printlnBg(Object o){
-        IO.println(this.bg(o.toString()));
+        System.out.println(this.bg(o.toString()));
     }
 }

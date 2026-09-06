@@ -1,4 +1,4 @@
-package com.github;
+package com.github.pateladitya;
 
 public enum Style {
     BOLD("\033[1m", "\033[22m"),
@@ -11,10 +11,8 @@ public enum Style {
     HIDDEN("\033[8m", "\033[28m"),
     STRIKE_THROUGH("\033[9m", "\033[29m");
 
-    private final String ansi;
-    private final String reset;
-
-    public static final String RESET_ALL = "\033[0m";
+    public final String ansi;
+    public final String reset;
 
     Style(String ansi, String reset){
         this.ansi = ansi;
@@ -26,10 +24,10 @@ public enum Style {
     }
 
     public void print(Object o){
-        IO.print(this.apply(o.toString()));
+        System.out.print(this.apply(o.toString()));
     }
 
     public void println(Object o){
-        IO.println(this.apply(o.toString()));
+        System.out.println(this.apply(o.toString()));
     }
 }
