@@ -1,4 +1,4 @@
-package com.github.pateladitya;
+package io.github.PatelAditya02;
 
 public enum Style {
     BOLD("\033[1m", "\033[22m"),

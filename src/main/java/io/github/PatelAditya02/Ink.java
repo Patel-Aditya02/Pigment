@@ -1,4 +1,4 @@
-package com.github.pateladitya;
+package io.github.PatelAditya02;
 
 public enum Ink {
     BLACK("\033[30m", "\033[40m"),

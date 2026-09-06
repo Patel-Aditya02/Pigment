@@ -1,4 +1,4 @@
-package com.github.pateladitya;
+package io.github.PatelAditya02;
 
 public final class Paint {
 
