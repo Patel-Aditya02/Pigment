@@ -14,7 +14,7 @@ public enum Style {
     private final String ansi;
     private final String reset;
 
-    public static final String RESET = "";
+    public static final String RESET_ALL = "\033[0m";
 
     Style(String ansi, String reset){
         this.ansi = ansi;
