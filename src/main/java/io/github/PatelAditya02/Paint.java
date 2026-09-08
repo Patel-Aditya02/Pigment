@@ -1,6 +1,6 @@
 package io.github.PatelAditya02;
 
-public final class Paint {
+public class Paint {
 
     private final String text;
     private String fg;
