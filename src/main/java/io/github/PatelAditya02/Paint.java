@@ -17,23 +17,39 @@ public class Paint {
         return new Paint(text);
     }
 
+    public static Paint of(String text, Ink fg) {
+        return Paint.of(text).fg(fg);
+    }
+
+    public static Paint of(String text, Ink fg, Ink bg){
+        return Paint.of(text, fg).bg(bg);
+    }
+
+    public static Paint of(String text, Ink fg, Style... styles){
+        return Paint.of(text, fg).style(styles);
+    }
+
+    public static Paint of(String text, Ink fg, Ink bg, Style... styles){
+        return Paint.of(text, fg, bg).style(styles);
+    }
+
     // Convenience: fg only
-    public static String string(String text, Ink fg) {
+    public static String str(String text, Ink fg) {
         return new Paint(text).fg(fg).toString();
     }
 
     // Convenience: fg + bg
-    public static String string(String text, Ink fg, Ink bg){
+    public static String str(String text, Ink fg, Ink bg){
         return new Paint(text).fg(fg).bg(bg).toString();
     }
 
     // Convenience: fg + styles
-    public static String string(String text, Ink fg, Style... styles) {
+    public static String str(String text, Ink fg, Style... styles) {
         return new Paint(text).fg(fg).style(styles).toString();
     }
 
     // Convenience: fg + bg + styles
-    public static String string(String text, Ink fg, Ink bg, Style... styles) {
+    public static String str(String text, Ink fg, Ink bg, Style... styles) {
         return new Paint(text).fg(fg).bg(bg).style(styles).toString();
     }
 
