@@ -1,57 +1,104 @@
 package io.github.PatelAditya02;
 
-public class Paint {
+/**
+ * A reusable ANSI style definition (foreground, background, and text styles).
+ * <p>
+ * Unlike a one-shot formatted string, a {@code Paint} instance holds no text of
+ * its own — it represents a *style* that can be applied to any number of strings,
+ * so it can be defined once and reused, e.g.:
+ * <pre>{@code
+ *     Paint success = Paint.of(Ink.GREEN, Style.BOLD);
+ *     success.println("Saved.");
+ *     success.println("Done.");
+ * }</pre>
+ */
+public class Paint implements Paintable{
 
-    private final String text;
+    public static final String RESET_ALL = "\033[0m";
+
     private String fg;
     private String bg;
     private final StringBuilder styles = new StringBuilder();
 
-    public static final String RESET_ALL = "\033[0m";
+    private Paint() {}
 
-    private Paint(String text) {
-        this.text = text;
+    // ---- Factories ---------------------------------------------------
+
+    public static Paint of(Ink fg) {
+        return new Paint().fg(fg);
     }
 
-    public static Paint of(String text) {
-        return new Paint(text);
+    public static Paint of(Style... styles) {
+        return new Paint().style(styles);
     }
 
-    public static Paint of(String text, Ink fg) {
-        return Paint.of(text).fg(fg);
+    public static Paint of(Ink fg, Ink bg) {
+        return new Paint().fg(fg).bg(bg);
     }
 
-    public static Paint of(String text, Ink fg, Ink bg){
-        return Paint.of(text, fg).bg(bg);
+    public static Paint of(Ink fg, Style... styles) {
+        return new Paint().fg(fg).style(styles);
     }
 
-    public static Paint of(String text, Ink fg, Style... styles){
-        return Paint.of(text, fg).style(styles);
+    public static Paint of(Ink fg, Ink bg, Style... styles) {
+        return new Paint().fg(fg).bg(bg).style(styles);
     }
 
-    public static Paint of(String text, Ink fg, Ink bg, Style... styles){
-        return Paint.of(text, fg, bg).style(styles);
+    // ---- Convenience one-shot helpers ---------------------------------
+
+    // Not added String str(String text, Ink fg) since str is not reusable
+    // and if you want a fg painted String then you can call Ink.COLOR.paint("text");
+    // But added str(Style... styles) because Style.STYLE.paint() will only paint one style
+
+    public static String str(String text, Style... style){
+        return Paint.of(style).paint(text);
     }
 
-    // Convenience: fg only
-    public static String str(String text, Ink fg) {
-        return new Paint(text).fg(fg).toString();
+    public static String str(String text, Ink fg, Ink bg) {
+        return Paint.of(fg, bg).paint(text);
     }
 
-    // Convenience: fg + bg
-    public static String str(String text, Ink fg, Ink bg){
-        return new Paint(text).fg(fg).bg(bg).toString();
-    }
-
-    // Convenience: fg + styles
     public static String str(String text, Ink fg, Style... styles) {
-        return new Paint(text).fg(fg).style(styles).toString();
+        return Paint.of(fg, styles).paint(text);
     }
 
-    // Convenience: fg + bg + styles
     public static String str(String text, Ink fg, Ink bg, Style... styles) {
-        return new Paint(text).fg(fg).bg(bg).style(styles).toString();
+        return Paint.of(fg, bg, styles).paint(text);
     }
+
+    public static void print(String text, Style... styles){
+        System.out.print(Paint.str(text, styles));
+    }
+
+    public static void print(String text, Ink fg, Ink bg){
+        System.out.print(Paint.str(text, fg, bg));
+    }
+
+    public static void print(String text, Ink fg, Style... styles){
+        System.out.print(Paint.str(text, fg, styles));
+    }
+
+    public static void print(String text, Ink fg, Ink bg, Style... styles){
+        System.out.print(Paint.str(text, fg, bg, styles));
+    }
+
+    public static void println(String text, Style... styles){
+        System.out.println(Paint.str(text, styles));
+    }
+
+    public static void println(String text, Ink fg, Ink bg){
+        System.out.println(Paint.str(text, fg, bg));
+    }
+
+    public static void println(String text, Ink fg, Style... styles){
+        System.out.println(Paint.str(text, fg, styles));
+    }
+
+    public static void println(String text, Ink fg, Ink bg, Style... styles){
+        System.out.println(Paint.str(text, fg, bg, styles));
+    }
+
+    // ---- Builder methods (mutate and return this) ---------------------
 
     public Paint fg(Ink ink) {
         this.fg = ink.fg;
@@ -70,8 +117,40 @@ public class Paint {
         return this;
     }
 
-    @Override
-    public String toString() {
+    // ---- Resets --------------------------------------------------------
+
+    /** Clears the foreground color only. */
+    public Paint resetFg() {
+        this.fg = null;
+        return this;
+    }
+
+    /** Clears the background color only. */
+    public Paint resetBg() {
+        this.bg = null;
+        return this;
+    }
+
+    /** Clears both foreground and background colors. */
+    public Paint resetColor() {
+        return resetFg().resetBg();
+    }
+
+    /** Clears all applied text styles (bold, italic, etc.), leaving colors intact. */
+    public Paint resetStyle() {
+        this.styles.setLength(0);
+        return this;
+    }
+
+    /** Clears color and style state, returning this Paint to a blank slate. */
+    public Paint resetAll() {
+        return resetColor().resetStyle();
+    }
+
+    // ---- Application -----------------------------------------------------
+
+    /** Applies this style to the given text, returning the formatted ANSI string. */
+    public String paint(String text) {
         StringBuilder sb = new StringBuilder();
         if (fg != null) sb.append(fg);
         if (bg != null) sb.append(bg);

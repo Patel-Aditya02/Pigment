@@ -1,6 +1,6 @@
 package io.github.PatelAditya02;
 
-public enum Ink {
+public enum Ink implements Paintable {
     BLACK("\033[30m", "\033[40m"),
     RED("\033[31m","\033[41m"),
     GREEN("\033[32m", "\033[42m"),
@@ -23,27 +23,20 @@ public enum Ink {
         this.bg = bg;
     }
 
-    public String fg(String str){
+    @Override
+    public String paint(String str){
         return this.fg + str + RESET_FG;
     }
 
-    public String bg(String str){
+    public String paintBg(String str){
         return this.bg + str + RESET_BG;
     }
 
-    public void print(Object o){
-       System.out.print(this.fg(o.toString()));
-    }
-
     public void printBg(Object o){
-        System.out.print(this.bg(o.toString()));
-    }
-
-    public void println(Object o){
-        System.out.println(this.fg(o.toString()));
+        System.out.print(this.paintBg(o.toString()));
     }
 
     public void printlnBg(Object o){
-        System.out.println(this.bg(o.toString()));
+        System.out.println(this.paintBg(o.toString()));
     }
 }

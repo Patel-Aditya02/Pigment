@@ -1,6 +1,6 @@
 package io.github.PatelAditya02;
 
-public enum Style {
+public enum Style implements Paintable{
     BOLD("\033[1m", "\033[22m"),
     DIM("\033[2m", "\033[22m"),
     ITALIC("\033[3m", "\033[23m"),
@@ -19,15 +19,7 @@ public enum Style {
         this.reset = reset;
     }
 
-    public String apply(String str){
+    public String paint(String str){
         return this.ansi + str + this.reset;
-    }
-
-    public void print(Object o){
-        System.out.print(this.apply(o.toString()));
-    }
-
-    public void println(Object o){
-        System.out.println(this.apply(o.toString()));
     }
 }
