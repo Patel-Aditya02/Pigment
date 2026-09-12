@@ -19,6 +19,7 @@ public enum Style implements Paintable{
         this.reset = reset;
     }
 
+    @Override
     public String paint(String str){
         return this.ansi + str + this.reset;
     }

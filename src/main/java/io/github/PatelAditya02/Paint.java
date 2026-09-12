@@ -1,5 +1,8 @@
 package io.github.PatelAditya02;
 
+import java.util.Collections;
+import java.util.EnumSet;
+
 /**
  * A reusable ANSI style definition (foreground, background, and text styles).
  * <p>
@@ -16,16 +19,24 @@ public class Paint implements Paintable{
 
     public static final String RESET_ALL = "\033[0m";
 
-    private String fg;
-    private String bg;
-    private final StringBuilder styles = new StringBuilder();
+    private Ink fg;
+    private Ink bg;
+    private final EnumSet<Style> styles = EnumSet.noneOf(Style.class);
 
     private Paint() {}
 
     // ---- Factories ---------------------------------------------------
 
+    public static Paint builder(){
+        return new Paint();
+    }
+
     public static Paint of(Ink fg) {
         return new Paint().fg(fg);
+    }
+
+    public static Paint ofBg(Ink bg) {
+        return new Paint().bg(bg);
     }
 
     public static Paint of(Style... styles) {
@@ -101,19 +112,17 @@ public class Paint implements Paintable{
     // ---- Builder methods (mutate and return this) ---------------------
 
     public Paint fg(Ink ink) {
-        this.fg = ink.fg;
+        this.fg = ink;
         return this;
     }
 
     public Paint bg(Ink ink) {
-        this.bg = ink.bg;
+        this.bg = ink;
         return this;
     }
 
     public Paint style(Style... styles) {
-        for (Style s : styles) {
-            this.styles.append(s.ansi);
-        }
+        Collections.addAll(this.styles, styles);
         return this;
     }
 
@@ -138,7 +147,7 @@ public class Paint implements Paintable{
 
     /** Clears all applied text styles (bold, italic, etc.), leaving colors intact. */
     public Paint resetStyle() {
-        this.styles.setLength(0);
+        this.styles.clear();
         return this;
     }
 
@@ -151,12 +160,18 @@ public class Paint implements Paintable{
 
     /** Applies this style to the given text, returning the formatted ANSI string. */
     public String paint(String text) {
-        StringBuilder sb = new StringBuilder();
-        if (fg != null) sb.append(fg);
-        if (bg != null) sb.append(bg);
-        sb.append(styles);
-        sb.append(text);
-        sb.append(RESET_ALL);
-        return sb.toString();
+        StringBuilder str = new StringBuilder();
+        if (fg != null){
+            str.append(this.fg.fg);;
+        }
+        if (bg != null){
+            str.append(bg.bg);
+        }
+        for(Style style: styles) {
+            str.append(style.ansi);
+        }
+        str.append(text);
+        str.append(RESET_ALL);
+        return str.toString();
     }
 }
