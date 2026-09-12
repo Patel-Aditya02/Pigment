@@ -27,32 +27,36 @@ public class Paint implements Paintable{
 
     // ---- Factories ---------------------------------------------------
 
-    public static Paint builder(){
+    public static Paint of(){
         return new Paint();
     }
 
     public static Paint of(Ink fg) {
-        return new Paint().fg(fg);
+        return Paint.of().fg(fg);
     }
 
     public static Paint ofBg(Ink bg) {
-        return new Paint().bg(bg);
+        return Paint.of().bg(bg);
+    }
+
+    public static Paint ofBg(Ink bg, Style... styles){
+        return Paint.of().bg(bg).style(styles);
     }
 
     public static Paint of(Style... styles) {
-        return new Paint().style(styles);
+        return Paint.of().style(styles);
     }
 
     public static Paint of(Ink fg, Ink bg) {
-        return new Paint().fg(fg).bg(bg);
+        return Paint.of().fg(fg).bg(bg);
     }
 
     public static Paint of(Ink fg, Style... styles) {
-        return new Paint().fg(fg).style(styles);
+        return Paint.of().fg(fg).style(styles);
     }
 
     public static Paint of(Ink fg, Ink bg, Style... styles) {
-        return new Paint().fg(fg).bg(bg).style(styles);
+        return Paint.of().fg(fg).bg(bg).style(styles);
     }
 
     // ---- Convenience one-shot helpers ---------------------------------
@@ -159,10 +163,11 @@ public class Paint implements Paintable{
     // ---- Application -----------------------------------------------------
 
     /** Applies this style to the given text, returning the formatted ANSI string. */
+    @Override
     public String paint(String text) {
         StringBuilder str = new StringBuilder();
         if (fg != null){
-            str.append(this.fg.fg);;
+            str.append(this.fg.fg);
         }
         if (bg != null){
             str.append(bg.bg);

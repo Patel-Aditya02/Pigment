@@ -39,9 +39,4 @@ public enum Ink implements Paintable {
     public void printlnBg(Object o){
         System.out.println(this.paintBg(o.toString()));
     }
-
-//    @Override
-//    public String toString(){
-//        return null;
-//    }
 }
